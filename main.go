@@ -1,14 +1,35 @@
 package main
 
-import "fmt"
+/* type calculator interface {
+	sum() int
+	mul() int
+	countList() int
+} */
 
-func sum(x int, y int) int{
-	z :=x+y
-	return z
+type sliceCalculator struct {
+	x []int
 }
 
+func (sc sliceCalculator) sum() int {
+	value := 0
+	for i := 0; i < len(sc.x); i++ {
+		value += sc.x[i]
+	}
+	return value
+}
+
+func callSliceCalculator1() {
+	a := sliceCalculator{
+		x: []int{1, 2, 3, 4, 5},
+	}
+	print(a.sum())
+}
+
+/* func callSliceCalculator2(c calculator) {
+	print(c.sum())
+} */
+
 func main() {
-	fmt.Printf("Hi theree ..\n")
-	r := sum(2,3)
-	fmt.Printf("sum of 2 and 3 is %v", r)
+	callSliceCalculator1()
+	//callSliceCalculator2(sliceCalculator{x : []int{2,3,4}})
 }
