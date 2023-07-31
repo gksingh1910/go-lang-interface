@@ -2,50 +2,68 @@ package main
 
 import "fmt"
 
-type calculator interface {
-	sum() int
-	mul() int
-	countList() int
+type sports_token interface {
+	createPlayerToken() string
+	mintPlayerToken() (string, error)
+	launchinOffering() string
+	launchinSecondryMarket() string
 }
 
-type sliceCalculator struct {
-	x []int
+type trade interface {
+	buyPlayerToken() bool
+	sellPalyerToken() bool
 }
 
-func (sc sliceCalculator) sum() int {
-	value := 0
-	for i := 0; i < len(sc.x); i++ {
-		value += sc.x[i]
+type player struct {
+	token_id    int32
+	name        string
+	age         int32
+	description string
+	status      []string
+}
+
+func (p *player) createPlayerToken() string {
+	p.status = append(p.status, "CREATE")
+	return fmt.Sprintf("created with id as %v", (p.name + fmt.Sprintf("%v", p.age)))
+}
+
+func (p *player) mintPlayerToken() (string, error) {
+	if p.status[0] != "CREATED" {
+		return "", fmt.Errorf("token yet not created")
 	}
-	return value
+	p.status = append(p.status, "MINTED")
+	return fmt.Sprintf("Player with token id as %v has been minted", p.token_id), nil
 }
 
-func (sc sliceCalculator) mul() int {
-	value := 1
-	for i := 0; i < len(sc.x); i++ {
-		value *= sc.x[i]
-	}
-	return value
+func (p *player) launchinOffering() string {
+	p.status = append(p.status, "INOFFERING")
+	return fmt.Sprintf("player with token id as %v has been put under offering", p.token_id)
 }
 
-func (sc sliceCalculator) countList() int {
-	return len(sc.x)
+func (p *player) launchinSecondryMarket() string {
+	p.status = append(p.status, "INMARKET")
+	return fmt.Sprintf("player with token id as %v has been put in secondry market", p.token_id)
 }
 
-func callSliceCalculator1() {
-	a := sliceCalculator{
-		x: []int{1, 2, 3, 4, 5},
-	}
-	print(a.sum())
-}
-
-func callSliceCalculator2(c calculator) {
-	fmt.Printf("\nsum of slice is %v", c.sum())
-	fmt.Printf("\nmul of slice is %v", c.mul())
-	fmt.Printf("\ncount of slice is %v", c.countList())
+func completeLifecycle(sp sports_token) {
+	i := sp.createPlayerToken()
+	j, e := sp.mintPlayerToken()
+	k := sp.launchinOffering()
+	l := sp.launchinSecondryMarket()
+	fmt.Printf("\n %v \n %v \n %v \n %v \n %v", i, j, k, l, e)
+	// fmt.Printf("player struct is %v", *p)
 }
 
 func main() {
-	callSliceCalculator1()
-	callSliceCalculator2(sliceCalculator{x: []int{2, 3, 4}})
+
+	// Call1
+	p := player{name: "dhoni", age: 32, description: "100s of 100"}
+	// x := p.createPlayerToken()
+	// fmt.Println("output of player token creation", x)
+	// fmt.Println("status of player token creation", p.status[0])
+
+	// Call2
+	completeLifecycle(&p)
+	fmt.Printf("\n player struct is %v", p)
+
 }
