@@ -1,6 +1,9 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"time"
+)
 
 type sports_token interface {
 	createPlayerToken() string
@@ -54,6 +57,10 @@ func completeLifecycle(sp sports_token) {
 	// fmt.Printf("player struct is %v", *p)
 }
 
+func gettingCalled(id int) {
+	fmt.Printf("\n getting called with id %v", id)
+}
+
 func main() {
 
 	// Call1
@@ -65,5 +72,24 @@ func main() {
 	// Call2
 	completeLifecycle(&p)
 	fmt.Printf("\n player struct is %v", p)
+
+	callsPerMilliSecond := int64(1000 / 800)
+	ch := make(chan int)
+	go func() {
+		i := 0
+		for {
+			select {
+			case <-ch:
+				return
+			default:
+				go gettingCalled(i)
+				time.Sleep(time.Duration(callsPerMilliSecond) * time.Millisecond)
+			}
+			i++
+		}
+	}()
+
+	time.Sleep(2 * time.Second)
+	close(ch)
 
 }
