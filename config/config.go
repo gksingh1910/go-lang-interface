@@ -3,11 +3,13 @@ package config
 import (
 	"fmt"
 	"os"
+
+	"github.com/joho/godotenv"
 )
 
-type config struct {
+type Config struct {
 	store  storeConfig
-	server httpServerConfig
+	Server HttpServerConfig
 }
 
 type storeConfig struct {
@@ -16,21 +18,28 @@ type storeConfig struct {
 	storeSchema string
 }
 
-type httpServerConfig struct {
-	host string
-	port string
+type HttpServerConfig struct {
+	Host string
+	Port string
 }
 
-func init() {
-	serverConfig := httpServerConfig{
-		host: os.Getenv("HTTP_SERVER"),
-		port: os.Getenv("HTTP_PORT"),
+var Conf *Config
+
+func Init() {
+	godotenv.Load()
+
+	serverConfig := HttpServerConfig{
+		Host: os.Getenv("HTTP_SERVER"),
+		Port: os.Getenv("HTTP_PORT"),
 	}
 
-	conf := config{
-		server: serverConfig,
+	Conf = &Config{
+		Server: serverConfig,
 	}
 
-	fmt.Printf(conf.server.host)
+}
 
+func Get() Config {
+	fmt.Printf("\n http server host is %v", *Conf)
+	return *Conf
 }

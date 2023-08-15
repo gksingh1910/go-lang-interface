@@ -1,0 +1,9 @@
+# github.com/go-chi/chi/v5 v5.0.10
+## explicit
+github.com/go-chi/chi/v5
+# github.com/joho/godotenv v1.5.1
+## explicit
+github.com/joho/godotenv
+# github.com/gksingh1910/go-lang-interface/config => ../config
+# github.com/gksingh1910/go-lang-interface/handler => ../handler
+# github.com/gksingh1910/go-lang-interface/util => ../util
